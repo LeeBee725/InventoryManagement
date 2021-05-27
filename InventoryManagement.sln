@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MysqlTest", "MysqlTest\MysqlTest.vcxproj", "{FD642CA2-11A3-4539-8D0D-F23B79F2E139}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ManagementClient", "ManagementClient\ManagementClient.vcxproj", "{818FC189-3D0C-44C8-AF39-E2167838C2EA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InventoryManager", "InventoryManager\InventoryManager.vcxproj", "{CDB7998D-BB9E-407B-9603-B425A854444D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,14 @@ Global
 		{FD642CA2-11A3-4539-8D0D-F23B79F2E139}.Release|x64.Build.0 = Release|x64
 		{FD642CA2-11A3-4539-8D0D-F23B79F2E139}.Release|x86.ActiveCfg = Release|Win32
 		{FD642CA2-11A3-4539-8D0D-F23B79F2E139}.Release|x86.Build.0 = Release|Win32
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Debug|x64.ActiveCfg = Debug|x64
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Debug|x64.Build.0 = Debug|x64
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Debug|x86.ActiveCfg = Debug|Win32
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Debug|x86.Build.0 = Debug|Win32
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Release|x64.ActiveCfg = Release|x64
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Release|x64.Build.0 = Release|x64
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Release|x86.ActiveCfg = Release|Win32
-		{818FC189-3D0C-44C8-AF39-E2167838C2EA}.Release|x86.Build.0 = Release|Win32
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Debug|x64.ActiveCfg = Debug|x64
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Debug|x64.Build.0 = Debug|x64
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Debug|x86.ActiveCfg = Debug|Win32
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Debug|x86.Build.0 = Debug|Win32
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Release|x64.ActiveCfg = Release|x64
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Release|x64.Build.0 = Release|x64
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Release|x86.ActiveCfg = Release|Win32
+		{CDB7998D-BB9E-407B-9603-B425A854444D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

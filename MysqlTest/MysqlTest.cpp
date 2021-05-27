@@ -5,18 +5,18 @@ InventoryDBHelper manager;
 
 int main() {
     try {
-        manager.insertRow("명품불고기", 3);
-        manager.insertRow("명품갈릭디핑소스", 12);
-        manager.printRows();
+        manager.insertItem("명품불고기", 3, "토핑냉장고");
+        manager.insertItem("명품갈릭디핑소스", 12, "큰냉장고");
+        manager.printItems();
 
-        manager.modifyRow("명품불고기", 5);
-        manager.printRows();
+        manager.modifyItemNum("명품불고기", 5);
+        manager.printItems();
 
-        manager.deleteRow("명품갈릭디핑소스");
-        manager.printRows();
+        manager.deleteItem("명품갈릭디핑소스");
+        manager.printItems();
 
-        manager.deleteRow("명품불고기");
-        manager.printRows();
+        manager.deleteItem("명품불고기");
+        manager.printItems();
 
     } catch (const mysqlx::Error &err) {
         std::cout << "ERROR: " << err << std::endl;

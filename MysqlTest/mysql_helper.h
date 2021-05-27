@@ -16,12 +16,13 @@ public:
     InventoryDBHelper();
     ~InventoryDBHelper();
 
-    inline Session& getSession() { return sess; }
-
+    void createTable(const string& name);
     void useTable(const string& name);
 
-    void insertRow(const string& name, const int& num);
-    void deleteRow(const string& name);
-    void modifyRow(const string& name, const int& num);
-    void printRows();
+    void insertItem(const string& name, const int& num, const string& containerName);
+    void deleteItem(const string& name);
+    void modifyItem(const string& name, const int& num, const string& containerName);
+    void modifyItemNum(const string& name, const int& num);
+    void modifyItemContainer(const string& name, const string& containerName);
+    void printItems();
 };

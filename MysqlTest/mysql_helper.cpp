@@ -1,33 +1,43 @@
 #include "mysql_helper.h"
 
 InventoryDBHelper::InventoryDBHelper():sess(Session(HOST, 33060, USER, PWD, DB)), curTable(sess.getDefaultSchema().getTable(TABLE)){
-	std::cout << "Creating session...\n";
-	// º¸¾ÈÀ» À§ÇØ ¼û°Ü³õÀº ÆÄÀÏ¿¡¼­ mysql Á¤º¸¸¦ °¡Á®¿Â´Ù.
+	std::cout << "Creating session... " << HOST << ", " << USER << " " << DB << "\n";
+	// ë³´ì•ˆì„ ìœ„í•´ ìˆ¨ê²¨ë†“ì€ íŒŒì¼ì—ì„œ mysql ì •ë³´ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
 	std::cout << "Complete to create session.\n";
 }
 InventoryDBHelper::~InventoryDBHelper(){
 	sess.close();
 }
 
+void InventoryDBHelper::createTable(const string& name) {
+	sess.getDefaultSchema().createCollection(name);
+}
+
 void InventoryDBHelper::useTable(const string& name) {
 	curTable = sess.getDefaultSchema().getTable(name);
 }
 
-void InventoryDBHelper::insertRow(const string& name, const int& num){
-	curTable.insert("name", "num").values(name, num).execute();
+void InventoryDBHelper::insertItem(const string& name, const int& num, const string& containerName){
+	curTable.insert("name", "num", "container").values(name, num, containerName).execute();
 }
-void InventoryDBHelper::deleteRow(const string& name){
+void InventoryDBHelper::deleteItem(const string& name){
 	curTable.remove().where("name like :name").bind("name", name).execute();	
 }
-void InventoryDBHelper::modifyRow(const string& name, const int& num){
+void InventoryDBHelper::modifyItem(const string& name, const int& num, const string& containerName) {
+	curTable.update().set("num", num).set("container", containerName).where("name like :name").bind("name", name).execute();
+}
+void InventoryDBHelper::modifyItemNum(const string& name, const int& num){
 	curTable.update().set("num", num).where("name like :name").bind("name", name).execute();
 }
-void InventoryDBHelper::printRows() {
+void InventoryDBHelper::modifyItemContainer(const string& name, const string& containerName) {
+	curTable.update().set("container", containerName).where("name like :name").bind("name", name).execute();
+}
+void InventoryDBHelper::printItems() {
 	RowResult result = curTable.select("*").execute();
 	std::vector<Row> v = result.fetchAll();
 	std::cout << "---------------------------------------------------------------------------------\n";
 	for (int i = 0; i < v.size(); ++i) {
-		std::cout << v[i][0] << " " << v[i][1] << " " << v[i][2] << "\n";
+		std::cout << v[i][0] << " " << v[i][1] << " " << v[i][2] << " " << v[i][3] << "\n";
 	}
 	std::cout << "---------------------------------------------------------------------------------\n";
 }
