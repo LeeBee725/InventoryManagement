@@ -7,6 +7,7 @@ int main() {
     try {
         manager.insertItem("명품불고기", 3, "토핑냉장고");
         manager.insertItem("명품갈릭디핑소스", 12, "큰냉장고");
+        //manager.insertItem("피클", 100, "음료냉장고");
         manager.printItems();
 
         manager.modifyItemNum("명품불고기", 5);

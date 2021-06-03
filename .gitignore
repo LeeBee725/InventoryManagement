@@ -4,7 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Mysql Login info file
-MysqlTest/mysql_auth.h
+*/mysql_auth.h
+
 
 # User-specific files
 *.rsuser

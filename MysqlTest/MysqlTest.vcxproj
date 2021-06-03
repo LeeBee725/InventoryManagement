@@ -153,8 +153,8 @@
     <ClCompile Include="mysql_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="mysql_helper.h" />
     <ClInclude Include="mysql_auth.h" />
+    <ClInclude Include="mysql_helper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
