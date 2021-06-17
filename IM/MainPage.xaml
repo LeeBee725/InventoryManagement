@@ -8,9 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Button x:Name="btn" Content="Hello UWP" HorizontalAlignment="Center" Click="btn_Click"/>
-
-
+    <Grid Margin="15 0 15 0">
+        <!-- Container list -->
+        <StackPanel x:Name="ctList" Orientation="Horizontal">
+            <Button x:Name="btn" Content="Hello UWP" Click="btn_Click" Height="200" Width="150" VerticalAlignment="Top" Margin="15 30 15 30"/>
+        </StackPanel>
     </Grid>
 </Page>

@@ -8,7 +8,7 @@ using MySqlX.XDevAPI;
 using MySqlX.XDevAPI.Common;
 using MySqlX.XDevAPI.CRUD;
 
-namespace IM
+namespace IM.Models
 {
     class MysqlHelper
     {

@@ -22,6 +22,7 @@ namespace IM
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public int idx = 0;
         public MainPage()
         {
             this.InitializeComponent();
@@ -29,11 +30,44 @@ namespace IM
 
         private async void btn_Click(object sender, RoutedEventArgs e)
         {
-            MediaElement mediaElement = new MediaElement();
-            var synth = new Windows.Media.SpeechSynthesis.SpeechSynthesizer();
-            Windows.Media.SpeechSynthesis.SpeechSynthesisStream stream = await synth.SynthesizeTextToStreamAsync("안녕하세요");
-            mediaElement.SetSource(stream, stream.ContentType);
-            mediaElement.Play();
+            // 컨테이너 공간 생성
+            StackPanel ctSpace = new StackPanel()
+            {
+                Name = "ctSpace" + (++idx).ToString(),
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(15,30,15,30)
+            };
+
+            // 컨테이너 공간의 제목 표시줄
+            StackPanel ctTitle = new StackPanel()
+            {
+                Name = "ctTitle" + idx.ToString(),
+                Orientation = Orientation.Horizontal
+            };
+            TextBox title = new TextBox()
+            {
+                Text = "컨테이너" + idx.ToString()
+            };
+            Button btn_add = new Button() { Width = 50, Height = 50, Content = "추가" };
+            Button btn_remove = new Button() { Width = 50, Height = 50, Content = "삭제" };
+            ctTitle.Children.Add(title);
+            ctTitle.Children.Add(btn_add);
+            ctTitle.Children.Add(btn_remove);
+
+            // 컨테이너 공간 안의 리스트 뷰
+            ListView itemList = new ListView()
+            { 
+                Name = "ctItemList" + idx.ToString(),
+
+            };
+
+            // 컨테이너 공간에 두 요소 장착
+            ctSpace.Children.Add(ctTitle);
+            ctSpace.Children.Add(itemList);
+
+            // 컨테이너 공간을 컨테이너 리스트에 장착
+            ctList.Children.Add(ctSpace);
+
         }
     }
 }

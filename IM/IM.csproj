@@ -119,7 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MysqlHelper.cs" />
+    <Compile Include="Models\Container.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\MysqlHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
