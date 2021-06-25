@@ -22,52 +22,70 @@ namespace IM
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public int idx = 0;
         public MainPage()
         {
             this.InitializeComponent();
         }
-
-        private async void btn_Click(object sender, RoutedEventArgs e)
+        private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            // 컨테이너 공간 생성
-            StackPanel ctSpace = new StackPanel()
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        // List of ValueTuple holding the Navigation Tag and the relative Navigation Page
+        private readonly List<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
+        {
+            ("HOME", typeof(HomePage)),
+            ("TOTAL", typeof(TotalPage)),
+            ("CONTAINER", typeof(ContainerPage))
+        };
+
+        private void navView_Loaded(object sender, RoutedEventArgs e)
+        {
+            // set the initial SelectedItem
+            foreach (NavigationViewItemBase item in navView.MenuItems)
             {
-                Name = "ctSpace" + (++idx).ToString(),
-                Orientation = Orientation.Vertical,
-                Margin = new Thickness(15,30,15,30)
-            };
-
-            // 컨테이너 공간의 제목 표시줄
-            StackPanel ctTitle = new StackPanel()
+                if (item is NavigationViewItem && item.Tag.ToString() == "HOME")
+                {
+                    navView.SelectedItem = item;
+                    break;
+                }
+            }
+            contentFrame.Navigate(typeof(HomePage));
+        }
+        private void navView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked == true)
             {
-                Name = "ctTitle" + idx.ToString(),
-                Orientation = Orientation.Horizontal
-            };
-            TextBox title = new TextBox()
+                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
+            }
+            else if (args.InvokedItemContainer != null)
             {
-                Text = "컨테이너" + idx.ToString()
-            };
-            Button btn_add = new Button() { Width = 50, Height = 50, Content = "추가" };
-            Button btn_remove = new Button() { Width = 50, Height = 50, Content = "삭제" };
-            ctTitle.Children.Add(title);
-            ctTitle.Children.Add(btn_add);
-            ctTitle.Children.Add(btn_remove);
+                var navItemTag = args.InvokedItemContainer.Tag.ToString();
+                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
+            }
+        }
 
-            // 컨테이너 공간 안의 리스트 뷰
-            ListView itemList = new ListView()
-            { 
-                Name = "ctItemList" + idx.ToString(),
+        private void NavView_Navigate(string navItemTag, Windows.UI.Xaml.Media.Animation.NavigationTransitionInfo transitionInfo)
+        {
+            Type _page = null;
+            if (navItemTag == "settings")
+            {
+                _page = typeof(SettingsPage);
+            }
+            else
+            {
+                var item = _pages.FirstOrDefault(p => p.Tag.Equals(navItemTag));
+                _page = item.Page;
+            }
+            // Get the page type before navigation so you can prevent duplicate
+            // entries in the backstack.
+            var preNavPageType = contentFrame.CurrentSourcePageType;
 
-            };
-
-            // 컨테이너 공간에 두 요소 장착
-            ctSpace.Children.Add(ctTitle);
-            ctSpace.Children.Add(itemList);
-
-            // 컨테이너 공간을 컨테이너 리스트에 장착
-            ctList.Children.Add(ctSpace);
-
+            // Only navigate if the selected page isn't currently loaded.
+            if (!(_page is null) && !Type.Equals(preNavPageType, _page))
+            {
+                contentFrame.Navigate(_page, null, transitionInfo);
+            }
         }
     }
 }

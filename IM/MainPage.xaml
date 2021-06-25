@@ -8,10 +8,35 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Margin="15 0 15 0">
-        <!-- Container list -->
-        <StackPanel x:Name="ctList" Orientation="Horizontal">
-            <Button x:Name="btn" Content="Hello UWP" Click="btn_Click" Height="200" Width="150" VerticalAlignment="Top" Margin="15 30 15 30"/>
-        </StackPanel>
+    <Grid>
+        <NavigationView x:Name="navView" Loaded="navView_Loaded" ItemInvoked="navView_ItemInvoked">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="홈" x:Name="home" Icon="Home" Tag="HOME"/>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="분류"/>
+                <NavigationViewItem Content="전체" x:Name="total" Tag="TOTAL"/>
+                <NavigationViewItem Content="저장위치" x:Name="containerView" Tag="CONTAINER"/>
+            </NavigationView.MenuItems>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Visible">
+                <Frame x:Name="contentFrame" Padding="12,0,12,24" IsTabStop="True" NavigationFailed="ContentFrame_NavigationFailed"/>
+            </ScrollViewer>
+        </NavigationView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{x:Bind navView.CompactModeThresholdWidth}"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="navView.PaneTitle" Value="IM"/>
+                        <Setter Target="navView.Header" Value="IM"/>
+                        <Setter Target="navView.PaneDisplayMode" Value="Top"/>
+                        <Setter Target="navView.IsBackButtonVisible" Value ="Collapsed"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
