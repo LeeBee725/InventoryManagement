@@ -25,29 +25,11 @@ namespace IM
         public TotalPage()
         {
             this.InitializeComponent();
+
+            
             
             ListView fruits = new ListView();
 
-            fruits.Items.Add("Apricot");
-            fruits.Items.Add("Banana");
-            fruits.Items.Add("Cherry");
-            fruits.Items.Add("Orange");
-            fruits.Items.Add("Strawberry");
-            fruits.Items.Add("Apricot");
-            fruits.Items.Add("Banana");
-            fruits.Items.Add("Cherry");
-            fruits.Items.Add("Orange");
-            fruits.Items.Add("Strawberry");
-            fruits.Items.Add("Apricot");
-            fruits.Items.Add("Banana");
-            fruits.Items.Add("Cherry");
-            fruits.Items.Add("Orange");
-            fruits.Items.Add("Strawberry");
-            fruits.Items.Add("Apricot");
-            fruits.Items.Add("Banana");
-            fruits.Items.Add("Cherry");
-            fruits.Items.Add("Orange");
-            fruits.Items.Add("Strawberry");
             fruits.Items.Add("Apricot");
             fruits.Items.Add("Banana");
             fruits.Items.Add("Cherry");

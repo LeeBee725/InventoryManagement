@@ -15,11 +15,14 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using IM.Models;
+
 namespace IM
 {
     /// <summary>
     /// 기본 애플리케이션 클래스를 보완하는 애플리케이션별 동작을 제공합니다.
     /// </summary>
+
     sealed partial class App : Application
     {
         /// <summary>
@@ -30,6 +33,7 @@ namespace IM
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
         }
 
         /// <summary>

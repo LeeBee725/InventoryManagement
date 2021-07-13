@@ -10,6 +10,9 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock>Total</TextBlock>
-        <StackPanel x:Name="totalSpace"></StackPanel>
+        <StackPanel x:Name="totalSpace">
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10 10 10 10" Content="새 아이템 등록"></Button>
+        </StackPanel>
+        
     </Grid>
 </Page>

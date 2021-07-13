@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -13,6 +14,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using IM.Models;
+
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x412에 나와 있습니다.
 
 namespace IM
@@ -20,11 +23,16 @@ namespace IM
     /// <summary>
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
+
     public sealed partial class MainPage : Page
     {
+        MysqlHelper mysqlHelper;
         public MainPage()
         {
             this.InitializeComponent();
+            mysqlHelper = MysqlHelper.GetInstance();
+            //mysqlHelper.InsertItem("명품불고기", 10, "큰 냉장고");
+            mysqlHelper.PrintItems();
         }
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
@@ -51,6 +59,8 @@ namespace IM
                 }
             }
             contentFrame.Navigate(typeof(HomePage));
+
+            Debug.WriteLine("로딩");
         }
         private void navView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
@@ -85,6 +95,7 @@ namespace IM
             if (!(_page is null) && !Type.Equals(preNavPageType, _page))
             {
                 contentFrame.Navigate(_page, null, transitionInfo);
+                Debug.WriteLine(_page.Name + "로 이동");
             }
         }
     }

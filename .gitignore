@@ -5,6 +5,8 @@
 
 # Mysql Login info file
 */mysql_auth.h
+*.config
+MysqlConnectionInfo.cs
 
 
 # User-specific files
