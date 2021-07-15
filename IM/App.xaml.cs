@@ -15,8 +15,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using IM.Models;
-
 namespace IM
 {
     /// <summary>
@@ -33,7 +31,6 @@ namespace IM
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
         }
 
         /// <summary>

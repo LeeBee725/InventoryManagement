@@ -22,21 +22,13 @@ namespace IM
     /// </summary>
     public sealed partial class TotalPage : Page
     {
+        public ItemViewModel viewModel { get; set; }
         public TotalPage()
         {
             this.InitializeComponent();
-
-            
-            
-            ListView fruits = new ListView();
-
-            fruits.Items.Add("Apricot");
-            fruits.Items.Add("Banana");
-            fruits.Items.Add("Cherry");
-            fruits.Items.Add("Orange");
-            fruits.Items.Add("Strawberry");
-
-            totalSpace.Children.Add(fruits);
+            this.viewModel = new ItemViewModel();
         }
     }
+
+    
 }

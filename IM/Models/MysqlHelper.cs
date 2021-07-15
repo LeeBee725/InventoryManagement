@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ using MySqlX.XDevAPI;
 using MySqlX.XDevAPI.Common;
 using MySqlX.XDevAPI.Relational;
 
-namespace IM.Models
+namespace IM
 {
     class MysqlHelper
     {
@@ -17,6 +18,7 @@ namespace IM.Models
         private readonly Session sess;
         private Table curTable;
 
+        // Singleton 패턴 사용
         public static MysqlHelper GetInstance()
         {
             if (mysqlHelper == null) mysqlHelper = new MysqlHelper();
@@ -39,11 +41,11 @@ namespace IM.Models
             Debug.WriteLine("Debug in curTable::" + curTable.Name);
         }
 
-        public void InsertItem(in string name, in int num, in string container)
+        public void InsertItem(in string name, in int num, in string container, in int needs, in int price)
         {
             try
             {
-                curTable.Insert("name", "num", "container").Values(name, num, container).Execute();
+                curTable.Insert("name", "num", "container", "needs", "price").Values(name, num, container, needs, price).Execute();
             }
             catch (NullReferenceException e)
             {
@@ -118,6 +120,34 @@ namespace IM.Models
             }
         }
 
+        public ObservableCollection<Item> GetTotalItems()
+        {
+            ObservableCollection<Item> itemList = new ObservableCollection<Item>();
+            try
+            {
+                //ObservableCollection<Item> itemList = new ObservableCollection<Item>();
+                RowResult result = curTable.Select("*").Execute();
+                while(result.Next())
+                {
+                    itemList.Add(new Item
+                    {
+                        id = Int32.Parse(result.Current.GetString("id")),
+                        name = result.Current.GetString("name"),
+                        container = result.Current.GetString("container"),
+                        num = Int32.Parse(result.Current.GetString("num")),
+                        needs = Int32.Parse(result.Current.GetString("needs")),
+                        price = Int32.Parse(result.Current.GetString("price"))
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetTotalItems():: " + e.Message);
+            }
+
+            return itemList;
+        }
+
         public void PrintItems()
         {
             try
@@ -126,12 +156,18 @@ namespace IM.Models
                 
                 while (result.Next())
                 {
-                    Debug.WriteLine(result.Current.GetString("id") + " " + result.Current.GetString("name") + " " + result.Current.GetString("container") + " " + result.Current.GetString("num"));
+                    Debug.WriteLine(
+                        result.Current.GetString("id") + " " +
+                        result.Current.GetString("name") + " " +
+                        result.Current.GetString("container") + " " +
+                        result.Current.GetString("num") + " " +
+                        result.Current.GetString("needs") + " " +
+                        result.Current.GetString("price"));
                 }
             }
             catch(Exception e)
             {
-                Debug.WriteLine("Exception in PrintItems():: " + e.Message  + "\n" + e.StackTrace + "\n" + e.Source + "\n" + e.TargetSite);
+                Debug.WriteLine("Exception in PrintItems():: " + e.Message);
             }
         }
     }
