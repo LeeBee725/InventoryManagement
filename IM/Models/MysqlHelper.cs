@@ -120,6 +120,39 @@ namespace IM
             }
         }
 
+        public Item FindItem(in string name)
+        {
+            Item item = null;
+            try
+            {
+                RowResult result = curTable.Select("*").Where("name like :name").Bind("name", name).Execute();
+                Row row = result.FetchOne();                
+
+                if(row != null)
+                {
+                    item = new Item
+                    {
+                        Id = Int32.Parse(row.GetString("id")),
+                        Name = row.GetString("name"),
+                        Container = row.GetString("container"),
+                        Num = Int32.Parse(row.GetString("num")),
+                        Needs = Int32.Parse(row.GetString("needs")),
+                        Price = Int32.Parse(row.GetString("price"))
+                    };
+                }
+                
+            } catch (NullReferenceException e)
+            {
+                Debug.WriteLine("NullReferenceException in FindItem():: " + e.Message);
+            }
+            catch (ArgumentNullException e)
+            {
+                Debug.WriteLine("ArgumentNullException in FindItem():: " + e.Message);
+            }
+
+            return item;
+        }
+
         public ObservableCollection<Item> GetTotalItems()
         {
             ObservableCollection<Item> itemList = new ObservableCollection<Item>();
@@ -131,12 +164,12 @@ namespace IM
                 {
                     itemList.Add(new Item
                     {
-                        id = Int32.Parse(result.Current.GetString("id")),
-                        name = result.Current.GetString("name"),
-                        container = result.Current.GetString("container"),
-                        num = Int32.Parse(result.Current.GetString("num")),
-                        needs = Int32.Parse(result.Current.GetString("needs")),
-                        price = Int32.Parse(result.Current.GetString("price"))
+                        Id = Int32.Parse(result.Current.GetString("id")),
+                        Name = result.Current.GetString("name"),
+                        Container = result.Current.GetString("container"),
+                        Num = Int32.Parse(result.Current.GetString("num")),
+                        Needs = Int32.Parse(result.Current.GetString("needs")),
+                        Price = Int32.Parse(result.Current.GetString("price"))
                     });
                 }
             }

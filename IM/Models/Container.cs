@@ -10,8 +10,8 @@ namespace IM
     {
         public static List<Item> items = new List<Item>()
         {
-            new Item() {id = 1, name = "명품불고기", num = 2, needs = 3, price = 5000},
-            new Item() {id = 2, name = "명품갈릭디핑소스", num = 50, needs = 100, price = 500}
+            new Item() {Id = 1, Name = "명품불고기", Num = 2, Needs = 3, Price = 5000},
+            new Item() {Id = 2, Name = "명품갈릭디핑소스", Num = 50, Needs = 100, Price = 500}
         };
     }
 }

@@ -45,7 +45,7 @@ namespace IM
             ("CONTAINER", typeof(ContainerPage))
         };
 
-        private void navView_Loaded(object sender, RoutedEventArgs e)
+        private void NavView_Loaded(object sender, RoutedEventArgs e)
         {
             // set the initial SelectedItem
             foreach (NavigationViewItemBase item in navView.MenuItems)
@@ -60,7 +60,7 @@ namespace IM
 
             Debug.WriteLine("로딩");
         }
-        private void navView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked == true)
             {

@@ -29,7 +29,7 @@ namespace IM
             this.InitializeComponent();
         }
 
-        private async void Btn_Click(object sender, RoutedEventArgs e)
+        private void Btn_Click(object sender, RoutedEventArgs e)
         {
             // 컨테이너 공간 생성
             StackPanel ctSpace = new StackPanel()
