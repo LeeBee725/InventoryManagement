@@ -35,6 +35,12 @@ namespace IM
         {
             mysqlHelper = MysqlHelper.GetInstance();
             items = mysqlHelper.GetTotalItems();
+            items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"Action::{e.Action} old = {e.OldItems} new = {e.NewItems}");
         }
     }
 }

@@ -23,13 +23,12 @@
                 <Button x:Name="BtnNewItemAdd" Content="확인" Click="BtnNewItemAdd_Click"></Button>
                 <Button x:Name="BtnNewItemCancel" Content="취소" Click="ToggleNewItemTemplate"></Button>
             </StackPanel>
-            <ListView ItemsSource="{x:Bind ViewModel.Items}" Background="CadetBlue">
+            <ListView x:Name="ItemListView" ItemsSource="{x:Bind ViewModel.Items}" Background="CadetBlue">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
                         <Setter Property="BorderBrush" Value="Black" />
                         <Setter Property="BorderThickness" Value="0,1,0,0" />
-                        <Setter Property="Grid.Row"  Value="Collapsed"/>
                     </Style>
                 </ListView.ItemContainerStyle>
                 
@@ -50,30 +49,28 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{x:Bind Id}" FontSize="16"></TextBlock>
-                            <TextBlock Grid.Column="1" Text="{x:Bind Name}"  FontSize="16" />
+                            <TextBlock x:Name="ItemName" Grid.Column="1" Text="{x:Bind Name}"  FontSize="16" />
                             <TextBlock Grid.Column="2" Text="{x:Bind Container}" FontSize="16"/>
                             <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                <RepeatButton x:Name="BtnNumDown" Content="내림" Click="BtnNumDown_Click"></RepeatButton>
-                                <TextBlock Text="{x:Bind Num}" Margin="3 0 3 0" FontSize="16"/>
-                                <RepeatButton x:Name="BtnNumUp" Content="올림" Click="BtnNumUp_Click"></RepeatButton>
+                                <Button x:Name="BtnNumDown" Content="내림" Click="BtnNumDown_Click"></Button>
+                                <TextBlock x:Name="ItemNum" Text="{x:Bind Num}" Margin="3 0 3 0" FontSize="16"/>
+                                <Button x:Name="BtnNumUp" Content="올림" Click="BtnNumUp_Click"></Button>
                             </StackPanel>
                             <TextBlock Grid.Column="4" Text="{x:Bind Needs}" Margin="3 0 3 0" FontSize="16"/>
                             <TextBlock Grid.Column="5" Text="{x:Bind Price}" FontSize="16"/>
                             <StackPanel Grid.Column="6" Orientation="Horizontal">
-                                <Button x:Name="BtnEdit" Content="수정" Margin="0 0 3 0 "></Button>
+                                <Button x:Name="BtnEdit" Content="수정" Margin="0 0 3 0 " Click="BtnEdit_Click"></Button>
                                 <Button x:Name="BtnDelete" Content="삭제" Margin="3 0 0 0" Click="BtnDelete_Click"></Button>
                             </StackPanel>
                             <TextBlock Grid.Row="1" Text="{x:Bind Id}" FontSize="16" Visibility="Collapsed"></TextBlock>
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind Name}"  FontSize="16"  Visibility="Collapsed"/>
-                            <TextBox Grid.Row="1" Grid.Column="2" Text="수정전: {x:Bind Container}" FontSize="16" Visibility="Collapsed"/>
-                            <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Horizontal" Visibility="Collapsed">
-                                <TextBox PlaceholderText="수정전: {x:Bind Num}" Margin="3 0 3 0" FontSize="16"/>
-                            </StackPanel>
-                            <TextBlock Grid.Row="1" Grid.Column="4" Text="{x:Bind Needs}" Margin="3 0 3 0" FontSize="16" Visibility="Collapsed"/>
-                            <TextBlock Grid.Row="1" Grid.Column="5" Text="{x:Bind Price}" FontSize="16" Visibility="Collapsed"/>
+                            <TextBox x:Name="EditContainer" Grid.Row="1" Grid.Column="2" PlaceholderText="{x:Bind Container}" FontSize="16" Visibility="Collapsed"/>
+                            <TextBox x:Name="EditNum" Grid.Row="1" Grid.Column="3"  PlaceholderText="{x:Bind Num}" Margin="3 0 3 0" FontSize="16" Visibility="Collapsed"/>
+                            <TextBox x:Name="EditNeeds" Grid.Row="1" Grid.Column="4" PlaceholderText="{x:Bind Needs}" Margin="3 0 3 0" FontSize="16" Visibility="Collapsed"/>
+                            <TextBox x:Name="EditPrice" Grid.Row="1" Grid.Column="5" PlaceholderText="{x:Bind Price}" FontSize="16" Visibility="Collapsed"/>
                             <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Horizontal" Visibility="Collapsed">
-                                <Button x:Name="BtnAccept" Content="확인" Margin="0 0 3 0 "></Button>
-                                <Button x:Name="BtnCancle" Content="취소" Margin="3 0 0 0" ></Button>
+                                <Button x:Name="BtnAccept" Content="확인" Margin="0 0 3 0" Click="BtnAccept_Click"></Button>
+                                <Button x:Name="BtnCancle" Content="취소" Margin="3 0 0 0" Click="BtnCancle_Click"></Button>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

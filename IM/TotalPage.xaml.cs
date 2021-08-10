@@ -52,6 +52,12 @@ namespace IM
             Item NewItem = mysqlHelper.FindItem(NewItemName.Text);
             NewItemTemplate.Visibility = Visibility.Collapsed;
             if(NewItem != null) ViewModel.Items.Add(NewItem);
+
+            NewItemName.Text = "";
+            NewItemNum.Text = "";
+            NewItemContainer.Text = "";
+            NewItemNeeds.Text = "";
+            NewItemPrice.Text = "";
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
@@ -69,16 +75,17 @@ namespace IM
 
         private async void BtnNumUp_Click(object sender, RoutedEventArgs e)
         {
-            RepeatButton BtnNumUp = (RepeatButton)sender;
-            StackPanel stackPanel = (StackPanel)BtnNumUp.Parent;
-            Grid grid = (Grid)stackPanel.Parent;
-            TextBlock NameTextBlock = (TextBlock)grid.Children[1];
-            TextBlock NumTextBlock = (TextBlock)stackPanel.Children[1];
+            Button BtnNumUp = (Button)sender;
+            Grid grid = (Grid)((StackPanel)BtnNumUp.Parent).Parent;
+            TextBlock NameTextBlock = (TextBlock)grid.FindName("ItemName");
+            Item Editted = ViewModel.Items.Where(x => x.Name == NameTextBlock.Text).FirstOrDefault();
+            int idx = ViewModel.Items.IndexOf(Editted);
 
-            int num = Int32.Parse(NumTextBlock.Text);
-            if(num < 999)
+            int num = Editted.Num;
+            if (num < 999)
             {
-                NumTextBlock.Text = (++num).ToString();
+                Editted.Num++;
+                ViewModel.Items[ViewModel.Items.IndexOf(Editted)] = Editted;
                 mysqlHelper.ModifyItem(NameTextBlock.Text, num);
             }
             else
@@ -86,21 +93,30 @@ namespace IM
                 Debug.WriteLine("BtnNumUp_Click:: it can't be over 999");
                 await new MessageDialog("수량이 999보다 클 수 없습니다.", "알림").ShowAsync();
             }
-            
+
+            Button BtnEdit = (Button)grid.FindName("BtnEdit");
+            int len = grid.Children.Count;
+            for (int i = 7; i < len; ++i)
+            {
+                grid.Children[i].Visibility = Visibility.Collapsed;
+            }
+            BtnEdit.Visibility = Visibility.Visible;
+
         }
 
         private async void BtnNumDown_Click(object sender, RoutedEventArgs e)
         {
-            RepeatButton BtnNumUp = (RepeatButton)sender;
-            StackPanel stackPanel = (StackPanel)BtnNumUp.Parent;
-            Grid grid = (Grid)stackPanel.Parent;
-            TextBlock NameTextBlock = (TextBlock)grid.Children[1];
-            TextBlock NumTextBlock = (TextBlock)stackPanel.Children[1];
+            Button BtnNumUp = (Button)sender;
+            Grid grid = (Grid)((StackPanel)BtnNumUp.Parent).Parent;
+            TextBlock NameTextBlock = (TextBlock)grid.FindName("ItemName");
+            Item Editted = ViewModel.Items.Where(x => x.Name == NameTextBlock.Text).FirstOrDefault();
+            int idx = ViewModel.Items.IndexOf(Editted);
 
-            int num = Int32.Parse(NumTextBlock.Text);
+            int num = Editted.Num;
             if (num > 0)
             {
-                NumTextBlock.Text = (--num).ToString();
+                Editted.Num--;
+                ViewModel.Items[ViewModel.Items.IndexOf(Editted)] = Editted;
                 mysqlHelper.ModifyItem(NameTextBlock.Text, num);
             }
             else
@@ -108,7 +124,81 @@ namespace IM
                 Debug.WriteLine("BtnNumUp_Click:: it can't be under 0");
                 await new MessageDialog("수량이 0보다 작을 수 없습니다.", "알림").ShowAsync();
             }
+
+            Button BtnEdit = (Button)grid.FindName("BtnEdit");
+            int len = grid.Children.Count;
+            for (int i = 7; i < len; ++i)
+            {
+                grid.Children[i].Visibility = Visibility.Collapsed;
+            }
+            BtnEdit.Visibility = Visibility.Visible;
+
+        }
+
+        private void BtnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            Button BtnEdit = (Button)sender;
+            Grid grid = (Grid)((StackPanel)BtnEdit.Parent).Parent;
+            foreach (var element in grid.Children)
+            {
+                if (element.Visibility != Visibility.Visible) element.Visibility = Visibility.Visible;
+            }
+            BtnEdit.Visibility = Visibility.Collapsed;
+        }
+
+        private void BtnCancle_Click(object sender, RoutedEventArgs e)
+        {
+            Button BtnCancle = (Button)sender;
+            Grid grid = (Grid)((StackPanel)BtnCancle.Parent).Parent;
+            Button BtnEdit = (Button)grid.FindName("BtnEdit");
+            int len = grid.Children.Count;
+            for (int i = 7; i < len; ++i)
+            {
+                grid.Children[i].Visibility = Visibility.Collapsed;
+            }
+            BtnEdit.Visibility = Visibility.Visible;
+        }
+
+        private void BtnAccept_Click(object sender, RoutedEventArgs e)
+        {
+            Button BtnAccept = (Button)sender;
+            Grid grid = (Grid)((StackPanel)BtnAccept.Parent).Parent;
+            Button BtnEdit = (Button)grid.FindName("BtnEdit");
+
+            TextBlock NameTextBlock = (TextBlock)grid.FindName("ItemName");
+
+            TextBox EditContainerTextBox = (TextBox)grid.FindName("EditContainer");
+            TextBox EditNumTextBox = (TextBox)grid.FindName("EditNum");
+            TextBox EditNeedsTextBox = (TextBox)grid.FindName("EditNeeds");
+            TextBox EditPriceTextBox = (TextBox)grid.FindName("EditPrice");
+
+            string EditContainer = EditContainerTextBox.Text != "" ? EditContainerTextBox.Text:EditContainerTextBox.PlaceholderText;
+            int EditNum = EditNumTextBox.Text != "" ? Int32.Parse(EditNumTextBox.Text):Int32.Parse(EditNumTextBox.PlaceholderText);
+            int EditNeeds = EditNeedsTextBox.Text != "" ? Int32.Parse(EditNeedsTextBox.Text) : Int32.Parse(EditNeedsTextBox.PlaceholderText);
+            int EditPrice = EditPriceTextBox.Text != "" ? Int32.Parse(EditPriceTextBox.Text) : Int32.Parse(EditPriceTextBox.PlaceholderText);
+
+            mysqlHelper.ModifyItem(NameTextBlock.Text, EditNum, EditContainer, EditNeeds, EditPrice);
             
+            Item Editted = ViewModel.Items.Where(x => x.Name == NameTextBlock.Text).FirstOrDefault();
+            int idx = ViewModel.Items.IndexOf(Editted);
+            Editted.Container = EditContainer;
+            Editted.Num = EditNum;
+            Editted.Needs = EditNeeds;
+            Editted.Price = EditPrice;
+
+            ViewModel.Items[ViewModel.Items.IndexOf(Editted)] = Editted;
+
+            int len = grid.Children.Count;
+            for (int i = 7; i < len; ++i)
+            {
+                grid.Children[i].Visibility = Visibility.Collapsed;
+            }
+            BtnEdit.Visibility = Visibility.Visible;
+
+            EditContainerTextBox.Text = "";
+            EditNumTextBox.Text = "";
+            EditNeedsTextBox.Text = "";
+            EditPriceTextBox.Text = "";
         }
     }
 

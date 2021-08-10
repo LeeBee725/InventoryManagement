@@ -119,6 +119,21 @@ namespace IM
                 Debug.WriteLine("ArgumentNullException in ModifyItem():: " + e.Message);
             }
         }
+        public void ModifyItem(in string name, in int num, in string container, in int needs, in int price)
+        {
+            try
+            {
+                curTable.Update().Set("name", name).Set("num", num).Set("container", container).Set("needs",needs).Set("price",price).Where("name like :name").Bind("name", name).Execute();
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.WriteLine("NullReferenceException in ModifyItem():: " + e.Message);
+            }
+            catch (ArgumentNullException e)
+            {
+                Debug.WriteLine("ArgumentNullException in ModifyItem():: " + e.Message);
+            }
+        }
 
         public Item FindItem(in string name)
         {
