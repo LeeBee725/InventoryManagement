@@ -36,7 +36,7 @@ namespace IM.Core.Helpers
 
             sess = MySQLX.GetSession(stringBuilder.ToString());
             Debug.WriteLine("Debug in sess.GetCurrentSchema()::" + sess.GetCurrentSchema().Name);
-            curTable = sess.GetCurrentSchema().GetTable(MysqlConnectionInfo.TABLE);
+            curTable = sess.GetCurrentSchema().GetTable(MysqlConnectionInfo.TABLE_PRODUCT);
             Debug.WriteLine("Debug in curTable::" + curTable.Name);
         }
 
@@ -102,10 +102,10 @@ namespace IM.Core.Helpers
                     item = new Item
                     {
                         Name = result.Current.GetString("name"),
-                        Quantity = Double.Parse(result.Current.GetString("quantity")),
-                        QuantityOfNeeds = Double.Parse(result.Current.GetString("quantity_of_needs")),
-                        PricePerPiece = Double.Parse(result.Current.GetString("price_per_piece")),
-                        QuantityPerPiece = Double.Parse(result.Current.GetString("quantity_per_piece"))
+                        Quantity = double.Parse(result.Current.GetString("quantity")),
+                        QuantityOfNeeds = double.Parse(result.Current.GetString("quantity_of_needs")),
+                        PricePerPiece = double.Parse(result.Current.GetString("price_per_piece")),
+                        QuantityPerPiece = double.Parse(result.Current.GetString("quantity_per_piece"))
                     };
                 }
 
@@ -134,10 +134,10 @@ namespace IM.Core.Helpers
                     itemList.Add(new Item
                     {
                         Name = result.Current.GetString("name"),
-                        Quantity = Double.Parse(result.Current.GetString("quantity")),
-                        QuantityOfNeeds = Double.Parse(result.Current.GetString("quantity_of_needs")),
-                        PricePerPiece = Double.Parse(result.Current.GetString("price_per_piece")),
-                        QuantityPerPiece = Double.Parse(result.Current.GetString("quantity_per_piece"))
+                        Quantity = double.Parse(result.Current.GetString("quantity")),
+                        QuantityOfNeeds = double.Parse(result.Current.GetString("quantity_of_needs")),
+                        PricePerPiece = double.Parse(result.Current.GetString("price_per_piece")),
+                        QuantityPerPiece = double.Parse(result.Current.GetString("quantity_per_piece"))
                     });
                 }
             }
