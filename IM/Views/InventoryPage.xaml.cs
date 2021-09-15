@@ -13,6 +13,7 @@ namespace IM.Views
         public InventoryPage()
         {
             InitializeComponent();
+            ViewModel.SortItem();
         }
 
         private void BtnAdd_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -70,6 +71,7 @@ namespace IM.Views
             else
             {
                 ViewModel.AddItem(newItemName.Text, double.Parse(newItemQuantity.Text), double.Parse(newItemQON.Text), double.Parse(newItemPPP.Text), double.Parse(newItemQPP.Text));
+                ViewModel.SortItem();
 
                 newItemName.Text = "";
                 newItemQuantity.Text = "";
@@ -199,6 +201,7 @@ namespace IM.Views
             double qpp = ChangedQPP.Text.Equals("") ? double.Parse(ChangedQPP.PlaceholderText) : double.Parse(ChangedQPP.Text);
 
             ViewModel.ModifyItem(name, quantity, qon, ppp, qpp);
+            ViewModel.SortItem();
 
             BtnModify.Content = "수정";
             ItemQuantity.Visibility = Windows.UI.Xaml.Visibility.Visible;

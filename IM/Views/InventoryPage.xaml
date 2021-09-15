@@ -7,61 +7,32 @@
     xmlns:model="using:IM.Core.Models"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="BtnAdd" Content="새 항목 추가" Margin="2" Click="BtnAdd_Click"></Button>
-                    <!--<Button x:Name="BtnModify" Content="수정" Margin="2" Click="BtnModify_Click"></Button>-->
-                </StackPanel>
-
-                <ListView
-                    x:Name="ItemListView"
-                    ItemsSource="{x:Bind ViewModel.Items}">
-                    <ListView.Header>
-                        <Grid Margin="0 0 0 0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width=".5*"/>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="번호" FontSize="16"></TextBlock>
-                            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="이름"  FontSize="16" />
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="양" FontSize="16"/>
-                            <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Text="필요량" Margin="3 0 3 0" FontSize="16"/>
-                            <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Text="가격" Margin="3 0 3 0" FontSize="16"/>
-                            <TextBlock Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="수량당 중량" Margin="3 0 3 0" FontSize="16"/>
-                            <TextBlock x:Name="NewItemAdd" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="새로운 항목" Visibility="Collapsed" Margin="3 0 0 0"/>
-                            <TextBox x:Name="NewItemName"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="이름" TextAlignment="Center"/>
-                            <TextBox x:Name="NewItemQuantity" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="양" TextAlignment="Center"/>
-                            <TextBox x:Name="NewItemQON" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="필요량" TextAlignment="Center"/>
-                            <TextBox x:Name="NewItemPPP" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="가격" TextAlignment="Center"/>
-                            <TextBox x:Name="NewItemQPP" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="수량당 중량" TextAlignment="Center"/>
-                            <StackPanel x:Name="NewItemBtns" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed">
-                                <Button x:Name="BtnAddAccept" Content="확인" Margin="0 0 3 0 " Click="BtnAddAccept_Click"></Button>
-                                <Button x:Name="BtnAddCancel" Content="취소" Margin="3 0 0 0" Click="BtnAddCancel_Click"></Button>
-                            </StackPanel>
-                        </Grid>
-                    </ListView.Header>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                            <Setter Property="Background" Value="lightgreen"/>
-                            <Setter Property="Margin" Value="0 4 0 0"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Item">
-                            <Grid>
+    <Grid x:Name="ContentArea" >
+        <Grid Margin="{StaticResource MediumLeftRightMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Inventory" Style="{ThemeResource HeaderTextBlockStyle}"/>
+            <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent" VerticalAlignment="Center">
+                <AppBarButton x:Name="BtnAdd" Icon="Add" Click="BtnAdd_Click"/>
+                <AppBarSeparator/>
+                <AppBarButton Icon="Refresh"/>
+            </CommandBar>
+            <Grid
+                Grid.Row="1"
+                Grid.ColumnSpan="2">
+                <Grid x:Name="InventoryContent" Background="White" Margin="0 4 0 0">
+                    <ListView
+                        Margin="{StaticResource MediumLeftRightMargin}"
+                        x:Name="ItemListView"
+                        ItemsSource="{x:Bind ViewModel.Items}">
+                        <ListView.Header>
+                            <Grid Margin="0 0 0 0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -75,28 +46,71 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="000" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"></TextBlock>
-                                <TextBlock Grid.Column="1" x:Name="ItemName" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Name}"  FontSize="16" />
-                                <TextBlock Grid.Column="2" x:Name="ItemQuantity"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Quantity}" FontSize="16"/>
-                                <TextBlock Grid.Column="3" x:Name="ItemQON" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind QuantityOfNeeds}" Margin="3 0 3 0" FontSize="16"/>
-                                <TextBlock Grid.Column="4" x:Name="ItemPPP" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind PricePerPiece}" Margin="3 0 3 0" FontSize="16"/>
-                                <TextBlock Grid.Column="5" x:Name="ItemQPP" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind QuantityPerPiece}" Margin="3 0 3 0" FontSize="16"/>
-                                <StackPanel Grid.Column="6" x:Name="ItemBtns" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Button x:Name="BtnModify" Content="수정" Margin="0 0 3 0"  Click="BtnModify_Click"></Button>
-                                    <Button x:Name="BtnDelete"  Content="삭제" Margin="3 0 3 0" Click="BtnDelete_Click" ></Button>
-                                    <Button x:Name="BtnSave" VerticalAlignment="Center" HorizontalAlignment="Center" Content="저장" Visibility="Collapsed" Margin="3 0 0 0"  Click="BtnSave_Click"/>
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="번호" FontSize="16"></TextBlock>
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="이름"  FontSize="16" />
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="양" FontSize="16"/>
+                                <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Text="필요량" Margin="3 0 3 0" FontSize="16"/>
+                                <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Text="가격" Margin="3 0 3 0" FontSize="16"/>
+                                <TextBlock Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="수량당 중량" Margin="3 0 3 0" FontSize="16"/>
+                                <TextBlock x:Name="NewItemAdd" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="새로운 항목" Visibility="Collapsed" Margin="3 0 0 0"/>
+                                <TextBox x:Name="NewItemName"  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="이름" TextAlignment="Center"/>
+                                <TextBox x:Name="NewItemQuantity" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="양" TextAlignment="Center"/>
+                                <TextBox x:Name="NewItemQON" Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="필요량" TextAlignment="Center"/>
+                                <TextBox x:Name="NewItemPPP" Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="가격" TextAlignment="Center"/>
+                                <TextBox x:Name="NewItemQPP" Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed" PlaceholderText="수량당 중량" TextAlignment="Center"/>
+                                <StackPanel x:Name="NewItemBtns" Grid.Row="1" Grid.Column="6" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Visibility="Collapsed">
+                                    <Button x:Name="BtnAddAccept" Content="확인" Margin="0 0 3 0 " Click="BtnAddAccept_Click"></Button>
+                                    <Button x:Name="BtnAddCancel" Content="취소" Margin="3 0 0 0" Click="BtnAddCancel_Click"></Button>
                                 </StackPanel>
-
-                                <TextBox Grid.Column="2" x:Name="ChangedQuantity" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind Quantity}" TextAlignment="Center" Visibility="Collapsed" FontSize="16" />
-                                <TextBox Grid.Column="3" x:Name="ChangedQON" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind QuantityOfNeeds}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
-                                <TextBox Grid.Column="4" x:Name="ChangedPPP" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind PricePerPiece}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
-                                <TextBox Grid.Column="5" x:Name="ChangedQPP" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind QuantityPerPiece}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
-
                             </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
+                        </ListView.Header>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="Background" Value="lightgreen"/>
+                                <Setter Property="Margin" Value="0 4 0 0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Item">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".5*"/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="000" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16"></TextBlock>
+                                    <TextBlock Grid.Column="1" x:Name="ItemName" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Name}"  FontSize="16" />
+                                    <TextBlock Grid.Column="2" x:Name="ItemQuantity"  VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Quantity}" FontSize="16"/>
+                                    <TextBlock Grid.Column="3" x:Name="ItemQON" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind QuantityOfNeeds}" Margin="3 0 3 0" FontSize="16"/>
+                                    <TextBlock Grid.Column="4" x:Name="ItemPPP" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind PricePerPiece}" Margin="3 0 3 0" FontSize="16"/>
+                                    <TextBlock Grid.Column="5" x:Name="ItemQPP" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind QuantityPerPiece}" Margin="3 0 3 0" FontSize="16"/>
+                                    <StackPanel Grid.Column="6" x:Name="ItemBtns" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Button x:Name="BtnModify" Content="수정" Margin="0 0 3 0"  Click="BtnModify_Click"></Button>
+                                        <Button x:Name="BtnDelete"  Content="삭제" Margin="3 0 3 0" Click="BtnDelete_Click" ></Button>
+                                        <Button x:Name="BtnSave" VerticalAlignment="Center" HorizontalAlignment="Center" Content="저장" Visibility="Collapsed" Margin="3 0 0 0"  Click="BtnSave_Click"/>
+                                    </StackPanel>
+
+                                    <TextBox Grid.Column="2" x:Name="ChangedQuantity" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind Quantity}" TextAlignment="Center" Visibility="Collapsed" FontSize="16" />
+                                    <TextBox Grid.Column="3" x:Name="ChangedQON" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind QuantityOfNeeds}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
+                                    <TextBox Grid.Column="4" x:Name="ChangedPPP" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind PricePerPiece}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
+                                    <TextBox Grid.Column="5" x:Name="ChangedQPP" VerticalAlignment="Center" HorizontalAlignment="Center" PlaceholderText="{x:Bind QuantityPerPiece}" TextAlignment="Center" Visibility="Collapsed" Margin="3 0 3 0" FontSize="16" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

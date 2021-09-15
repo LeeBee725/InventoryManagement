@@ -6,13 +6,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+    <Grid x:Name="ContentArea" >
+        <Grid Margin="{StaticResource MediumLeftRightMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Consumption" Style="{ThemeResource HeaderTextBlockStyle}"/>
+            <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent" VerticalAlignment="Center">
+                <AppBarButton Icon="Add"/>
+                <AppBarSeparator/>
+                <AppBarButton Icon="Refresh"/>
+            </CommandBar>
+            <Grid
+                Grid.Row="1"
+                Grid.ColumnSpan="2">
+                <Grid x:Name="InventoryContent" Background="White" Margin="0 4 0 0">
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

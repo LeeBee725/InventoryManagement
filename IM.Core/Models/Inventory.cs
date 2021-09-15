@@ -18,6 +18,7 @@ namespace IM.Core.Models
         {
             mysqlHelper = MysqlHelper.GetInstance();
             items = mysqlHelper.GetTotalItems();
+            
         }
 
         public int AddItem(in string name, in double quantity, in double quantity_of_needs, in double price_per_piece, in double quantity_per_piece)
@@ -73,6 +74,11 @@ namespace IM.Core.Models
                 Debug.WriteLine("Inventory::DeleteItem():Error DB에서 아이템 찾기 실패");
                 return 1;
             }
+        }
+
+        public void SortItem()
+        {
+            items = new ObservableCollection<Item>(items.OrderByDescending(i => i.QuantityOfNeeds - i.Quantity));
         }
     }
 }

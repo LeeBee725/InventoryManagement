@@ -41,5 +41,10 @@ namespace IM.ViewModels
                 await new MessageDialog("항목 삭제 중 오류 발생", "오류").ShowAsync();
             }
         }
+
+        public void SortItem()
+        {
+            inventory.SortItem();
+        }
     }
 }

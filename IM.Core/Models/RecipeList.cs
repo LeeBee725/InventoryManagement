@@ -17,17 +17,6 @@ namespace IM.Core.Models
         {
             mysqlHelper = MysqlHelper.GetInstance();
             recipes = mysqlHelper.GetTotalRecipes();
-
-            foreach (var i in recipes)
-            {
-                Debug.WriteLine(i.Name);
-                int cnt = 0;
-                foreach (var j in i.Ingredients)
-                {
-                    Debug.WriteLine(cnt++);
-                    Debug.WriteLine("{0} {1}", j.Key, j.Value);
-                }
-            }
         }
     }
 }

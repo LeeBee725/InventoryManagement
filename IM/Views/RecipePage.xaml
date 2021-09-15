@@ -4,67 +4,197 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:IM.Core.Models"
+    xmlns:model="using:IM.Core.Models" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <ListView
-                    x:Name="ItemListView"
-                    ItemsSource="{x:Bind ViewModel.Recipes}">
-                <ListView.Header>
-                    <Grid Margin="0 0 0 0">
+    <Grid x:Name="ContentArea">
+        <Grid Margin="{StaticResource MediumLeftRightMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Recipe" Style="{ThemeResource HeaderTextBlockStyle}"/>
+            <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent" VerticalAlignment="Center">
+                <AppBarButton x:Name="BtnRecipeAdd" Icon="Add" Click="BtnRecipeAdd_Click"/>
+                <AppBarSeparator/>
+                <AppBarButton Icon="Edit" />
+                <AppBarButton Icon="Delete"/>
+                <AppBarSeparator/>
+                <AppBarButton Icon="Save"/>
+            </CommandBar>
+            <Grid
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+
+                <Grid x:Name="RecipeContent" Background="White" Margin="0 4 0 0">
+                    <ListView
+                        x:Name="RecipeListView"
+                        Margin="{StaticResource MediumLeftRightMargin}"
+                        ItemsSource="{x:Bind ViewModel.Recipes}">
+                        <ListView.Header>
+                            <Grid Margin="0 4 0 4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width=".5*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="이름"  FontSize="16" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="크기" FontSize="16"/>
+                                <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="가격" FontSize="16"/>
+                            </Grid>
+                        </ListView.Header>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                <Setter Property="Margin" Value="0 4 0 0"/>
+                                <Setter Property="Background" Value="Beige"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Recipe" >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width=".5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Name}"  FontSize="16" />
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Size}" FontSize="16"/>
+                                    <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Price}" Margin="3 0 3 0" FontSize="16"/>
+                                    <Button Grid.Column="3" x:Name="BtnInfo" VerticalAlignment="Center" HorizontalAlignment="Center" Content="상세정보" Click="BtnInfo_Click"></Button>
+                                    <StackPanel x:Name="RecipeInfo" Grid.Row="1" Grid.ColumnSpan="4" Orientation="Vertical" Visibility="Collapsed">
+                                        <TextBlock Text="소비재료" Margin="{StaticResource SmallLeftRightMargin}" FontSize="16"/>
+                                        <GridView ItemsSource="{x:Bind Ingredients}" Margin="{StaticResource MediumLeftRightMargin}">
+                                            <GridView.ItemContainerStyle>
+                                                <Style TargetType="GridViewItem">
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                    <Setter Property="Background" Value="Bisque"/>
+                                                </Style>
+                                            </GridView.ItemContainerStyle>
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        <TextBlock Text="{Binding Key}" MinWidth="100" MaxWidth="200" TextAlignment="Center"></TextBlock>
+                                                        <TextBlock Grid.Row="1" Text="{Binding Value}" TextAlignment="Center"></TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                        </GridView>
+
+
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Grid x:Name="RecipeForm" Visibility="Collapsed">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
+                            <RowDefinition Height="5*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width=".5*"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="이름"  FontSize="16" />
-                        <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="양" FontSize="16"/>
-                        <TextBlock Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" Text="필요량" Margin="3 0 3 0" FontSize="16"/>
-                        <TextBlock Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Text="가격" Margin="3 0 3 0" FontSize="16"/>
-                        <TextBlock Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Center" Text="수량당 중량" Margin="3 0 3 0" FontSize="16"/>
+                        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
+                            <RelativePanel>
+                                <StackPanel x:Name="NewMenu" Margin="20">
+                                    <TextBox x:Name="NewMenuName" Header= "메뉴 이름" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
+                                    <muxc:RadioButtons x:Name="NewMenuSize" Header="크기" Margin="0,24,0,0" SelectedIndex="0">
+                                        <x:String>M</x:String>
+                                        <x:String>L</x:String>
+                                        <x:String>XXXL</x:String>
+                                    </muxc:RadioButtons>
+                                    <TextBox x:Name="NewMenuPrice" Header= "메뉴 가격" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
+                                </StackPanel>
+                                <!--여기-->
+                                <StackPanel RelativePanel.RightOf="NewMenu" Margin="20">
+                                    <GridView x:Name="NewMenuIngredients" Background="Beige" Padding="10">
+                                        <GridView.Header>
+                                            <Grid MinWidth="{Binding ActualWidth, ElementName=NewMenu}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="소비재료 및 양(량)" VerticalAlignment="Center"/>
+                                                <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent">
+                                                    <AppBarButton Icon="Add"/>
+                                                </CommandBar>
+                                            </Grid>
+                                        </GridView.Header>
+                                        <GridView.ItemContainerStyle>
+                                            <Style TargetType="GridViewItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Background" Value="Bisque"/>
+                                                <Setter Property="MinWidth" Value="100"/>
+                                                <Setter Property="MinHeight" Value="60"/>
+                                            </Style>
+                                        </GridView.ItemContainerStyle>
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Text="ss" MinWidth="100" MaxWidth="200" TextAlignment="Center"></TextBlock>
+                                                    <TextBlock Grid.Row="1" Text="ss" TextAlignment="Center"></TextBlock>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                    </GridView>
+                                </StackPanel>
+                                
+                            </RelativePanel>
+                            
+                        </ScrollViewer>
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumLeftTopRightBottomMargin}">
+                            <Button x:Name="BtnNewRecipeAdd" Content="확인" Margin="0 5 5 0"/>
+                            <Button x:Name="BtnNewRecipeCancel" Content="취소" Margin="5 5 0 0"/>
+                        </StackPanel>
                     </Grid>
-                </ListView.Header>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                        <Setter Property="Background" Value="lightgreen"/>
-                        <Setter Property="Margin" Value="0 4 0 0"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Recipe">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Name}"  FontSize="16" />
-                            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Size}" FontSize="16"/>
-                            <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{x:Bind Price}" Margin="3 0 3 0" FontSize="16"/>
-                            <ListView Grid.Row="1" ItemsSource="{x:Bind Ingredients.Keys}"></ListView>
-                            <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{x:Bind Ingredients.Values}"></ListView>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </Grid>
+            </Grid>
         </Grid>
+
+        <!--<Pivot Background="{ThemeResource AppBarBackgroundThemeBrush}" >
+            
+            
+            <PivotItem Header="목록" Margin="0">
+                
+            </PivotItem>
+            <PivotItem Header="항목추가" Margin="0" >
+                
+            </PivotItem>
+            
+            <Pivot.RightHeader>
+                <CommandBar OverflowButtonVisibility="Collapsed" Background="Transparent">
+                    <AppBarButton Icon="Add" />
+                    <AppBarSeparator/>
+                    <AppBarButton Icon="Edit" />
+                    <AppBarButton Icon="Delete"/>
+                    <AppBarSeparator/>
+                    <AppBarButton Icon="Save"/>
+                </CommandBar>
+            </Pivot.RightHeader>
+        </Pivot>-->
+        
     </Grid>
 </Page>
