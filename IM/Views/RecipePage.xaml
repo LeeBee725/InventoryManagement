@@ -123,9 +123,9 @@
                                     </muxc:RadioButtons>
                                     <TextBox x:Name="NewMenuPrice" Header= "메뉴 가격" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
                                 </StackPanel>
-                                <!--여기-->
+                                
                                 <StackPanel RelativePanel.RightOf="NewMenu" Margin="20">
-                                    <GridView x:Name="NewMenuIngredients" Background="Beige" Padding="10">
+                                    <GridView x:Name="NewMenuIngredients" Background="Beige" Padding="10" MaxWidth="700">
                                         <GridView.Header>
                                             <Grid MinWidth="{Binding ActualWidth, ElementName=NewMenu}">
                                                 <Grid.ColumnDefinitions>
@@ -134,31 +134,37 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="소비재료 및 양(량)" VerticalAlignment="Center"/>
                                                 <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent">
-                                                    <AppBarButton Icon="Add"/>
+                                                    <AppBarButton x:Name="BtnAddNewIngredients" Icon="Add" Click="BtnAddNewIngredients_Click"/>
                                                 </CommandBar>
                                             </Grid>
                                         </GridView.Header>
                                         <GridView.ItemContainerStyle>
-                                            <Style TargetType="GridViewItem">
+                                            <Style TargetType="GridViewItem" >
                                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                                 <Setter Property="Background" Value="Bisque"/>
                                                 <Setter Property="MinWidth" Value="100"/>
                                                 <Setter Property="MinHeight" Value="60"/>
+                                                <Setter Property="CanDrag" Value="True"/>
+                                                <Setter Property="Template" >
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="GridViewItem">
+                                                            <StackPanel x:Name="IngredientForm" Orientation="Vertical">
+                                                                <TextBox x:Name="TBName"></TextBox>
+                                                                <TextBlock x:Name="IngredientName" Visibility="Collapsed"></TextBlock>
+                                                                <TextBox x:Name="TBQuantity" ></TextBox>
+                                                                <TextBlock x:Name="IngredientQuantity" Visibility="Collapsed"></TextBlock>
+                                                                <CommandBar OverflowButtonVisibility="Collapsed" Background="Transparent">
+                                                                    <AppBarButton x:Name="BtnIngredientAccept" Icon="Accept"></AppBarButton>
+                                                                    <AppBarButton x:Name="BtnIngredientCancel" Icon="Cancel" Click="BtnIngredientCancel_Click"></AppBarButton>
+                                                                    <AppBarButton x:Name="BtnIngredientRemove" Icon="Remove" Visibility="Collapsed"></AppBarButton>
+                                                                </CommandBar>
+                                                            </StackPanel>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
                                             </Style>
                                         </GridView.ItemContainerStyle>
-                                        <GridView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition/>
-                                                        <RowDefinition/>
-                                                    </Grid.RowDefinitions>
-                                                    <TextBlock Text="ss" MinWidth="100" MaxWidth="200" TextAlignment="Center"></TextBlock>
-                                                    <TextBlock Grid.Row="1" Text="ss" TextAlignment="Center"></TextBlock>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </GridView.ItemTemplate>
                                     </GridView>
                                 </StackPanel>
                                 

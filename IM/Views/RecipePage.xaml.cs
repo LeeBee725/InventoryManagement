@@ -1,16 +1,18 @@
 ﻿using System;
-
 using IM.ViewModels;
 using Windows.ApplicationModel.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+using System.Collections.Generic;
+
 namespace IM.Views
 {
     public sealed partial class RecipePage : Page
     {
         public RecipeViewModel ViewModel { get; } = new RecipeViewModel(new Core.Models.RecipeList());
+        public Dictionary<string, double> NewIngredients;
 
         public RecipePage()
         {
@@ -49,6 +51,30 @@ namespace IM.Views
                 RecipeListView.Visibility = Visibility.Visible;
                 RecipeForm.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void BtnAddNewIngredients_Click(object sender, RoutedEventArgs e)
+        {
+            GridView NewMenuIngredients = (GridView)FindName("NewMenuIngredients");
+
+            NewIngredients = new Dictionary<string, double>();
+
+            GridViewItem Form = new GridViewItem();
+
+            TextBox IngredientName = new TextBox();
+            TextBox IngredientQuantity = new TextBox();
+            AppBarButton BtnSave = new AppBarButton();
+            AppBarButton BtnRemove = new AppBarButton();
+            
+
+            NewMenuIngredients.Items.Add(Form);
+        }
+
+        private void BtnIngredientCancel_Click(object sender, RoutedEventArgs e)
+        {
+            GridView NewMenuIngredients = (GridView)FindName("NewMenuIngredients");
+
+            NewMenuIngredients.Items.Remove(NewMenuIngredients.SelectedItem);
         }
     }
 }
