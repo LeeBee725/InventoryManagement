@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:IM.Core.Models" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:model="using:IM.Core.Models"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
@@ -107,100 +107,9 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Grid x:Name="RecipeForm" Visibility="Collapsed">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
-                            <RelativePanel>
-                                <StackPanel x:Name="NewMenu" Margin="20">
-                                    <TextBox x:Name="NewMenuName" Header= "메뉴 이름" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
-                                    <muxc:RadioButtons x:Name="NewMenuSize" Header="크기" Margin="0,24,0,0" SelectedIndex="0">
-                                        <x:String>M</x:String>
-                                        <x:String>L</x:String>
-                                        <x:String>XXXL</x:String>
-                                    </muxc:RadioButtons>
-                                    <TextBox x:Name="NewMenuPrice" Header= "메뉴 가격" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
-                                </StackPanel>
-                                
-                                <StackPanel RelativePanel.RightOf="NewMenu" Margin="20">
-                                    <GridView x:Name="NewMenuIngredients" Background="Beige" Padding="10" MaxWidth="700">
-                                        <GridView.Header>
-                                            <Grid MinWidth="{Binding ActualWidth, ElementName=NewMenu}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="소비재료 및 양(량)" VerticalAlignment="Center"/>
-                                                <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent">
-                                                    <AppBarButton x:Name="BtnAddNewIngredients" Icon="Add" Click="BtnAddNewIngredients_Click"/>
-                                                </CommandBar>
-                                            </Grid>
-                                        </GridView.Header>
-                                        <GridView.ItemContainerStyle>
-                                            <Style TargetType="GridViewItem" >
-                                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                                <Setter Property="Background" Value="Bisque"/>
-                                                <Setter Property="MinWidth" Value="100"/>
-                                                <Setter Property="MinHeight" Value="60"/>
-                                                <Setter Property="CanDrag" Value="True"/>
-                                                <Setter Property="Template" >
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="GridViewItem">
-                                                            <StackPanel x:Name="IngredientForm" Orientation="Vertical">
-                                                                <TextBox x:Name="TBName"></TextBox>
-                                                                <TextBlock x:Name="IngredientName" Visibility="Collapsed"></TextBlock>
-                                                                <TextBox x:Name="TBQuantity" ></TextBox>
-                                                                <TextBlock x:Name="IngredientQuantity" Visibility="Collapsed"></TextBlock>
-                                                                <CommandBar OverflowButtonVisibility="Collapsed" Background="Transparent">
-                                                                    <AppBarButton x:Name="BtnIngredientAccept" Icon="Accept"></AppBarButton>
-                                                                    <AppBarButton x:Name="BtnIngredientCancel" Icon="Cancel" Click="BtnIngredientCancel_Click"></AppBarButton>
-                                                                    <AppBarButton x:Name="BtnIngredientRemove" Icon="Remove" Visibility="Collapsed"></AppBarButton>
-                                                                </CommandBar>
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </GridView.ItemContainerStyle>
-                                    </GridView>
-                                </StackPanel>
-                                
-                            </RelativePanel>
-                            
-                        </ScrollViewer>
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumLeftTopRightBottomMargin}">
-                            <Button x:Name="BtnNewRecipeAdd" Content="확인" Margin="0 5 5 0"/>
-                            <Button x:Name="BtnNewRecipeCancel" Content="취소" Margin="5 5 0 0"/>
-                        </StackPanel>
-                    </Grid>
+
                 </Grid>
             </Grid>
         </Grid>
-
-        <!--<Pivot Background="{ThemeResource AppBarBackgroundThemeBrush}" >
-            
-            
-            <PivotItem Header="목록" Margin="0">
-                
-            </PivotItem>
-            <PivotItem Header="항목추가" Margin="0" >
-                
-            </PivotItem>
-            
-            <Pivot.RightHeader>
-                <CommandBar OverflowButtonVisibility="Collapsed" Background="Transparent">
-                    <AppBarButton Icon="Add" />
-                    <AppBarSeparator/>
-                    <AppBarButton Icon="Edit" />
-                    <AppBarButton Icon="Delete"/>
-                    <AppBarSeparator/>
-                    <AppBarButton Icon="Save"/>
-                </CommandBar>
-            </Pivot.RightHeader>
-        </Pivot>-->
-        
     </Grid>
 </Page>
