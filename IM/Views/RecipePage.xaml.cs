@@ -13,7 +13,7 @@ namespace IM.Views
 {
     public sealed partial class RecipePage : Page
     {
-        public RecipeViewModel ViewModel { get; } = new RecipeViewModel(new Core.Models.RecipeList());
+        public RecipeViewModel ViewModel { get; set; } = new RecipeViewModel(new Core.Models.RecipeList());
 
         public RecipePage()
         {
@@ -39,7 +39,7 @@ namespace IM.Views
 
         private void BtnRecipeAdd_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(RecipeForm));
+            Frame.Navigate(typeof(RecipeForm), ViewModel);
         }
     }
 }

@@ -3,10 +3,62 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:IM" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ctr="using:IM.Control"
+    xmlns:model="using:IM.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <DataTemplate x:Key="AcceptIngredientTemplate" x:DataType="model:Ingredient">
+            <Grid x:Name="IngredientForm" Background="Wheat" Padding="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.ColumnSpan="2" x:Name="IngredientName" TextAlignment="Center" FontSize="20" Text="{x:Bind Name}" Padding="4" TextTrimming="CharacterEllipsis"></TextBlock>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Name="IngredientQuantity" TextAlignment="Center" FontSize="18" Text="{x:Bind Quantity}" Padding="4" TextTrimming="CharacterEllipsis"></TextBlock>
+                <Button Grid.Row="2" x:Name="BtnIngredientEdit" Click="BtnIngredientEdit_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                    <SymbolIcon Symbol="Edit" />
+                </Button>
+                <Button Grid.Row="2" Grid.Column="1" x:Name="BtnIngredientRemove" Click="BtnIngredientRemove_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                    <SymbolIcon Symbol="Remove"/>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="EditIngredientTemplate" x:DataType="model:Ingredient">
+            <Grid x:Name="IngredientForm" Background="Wheat" Padding="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.ColumnSpan="2" x:Name="TBName" TextAlignment="Center" Text="{x:Bind Name, Mode=TwoWay}"></TextBox>
+                <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="TBQuantity" TextAlignment="Center" Text="{x:Bind Quantity, Mode=TwoWay}"></TextBox>
+                <Button Grid.Row="2" x:Name="BtnIngredientAccept" Click="BtnIngredientAccept_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                    <SymbolIcon Symbol="Accept" />
+                </Button>
+                <Button Grid.Row="2" Grid.Column="1" x:Name="BtnIngredientCancel" Click="BtnIngredientCancel_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
+                    <SymbolIcon Symbol="Cancel"/>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <ctr:IngredientsDataTemplateSelector
+            x:Key="IngredientsDataTemplateSelector"
+            Accept="{StaticResource AcceptIngredientTemplate}"
+            Edit="{StaticResource EditIngredientTemplate}">
+
+        </ctr:IngredientsDataTemplateSelector>
+    </Page.Resources>
     <Grid x:Name="ContentArea">
         <Grid Margin="{StaticResource MediumLeftRightMargin}">
             <Grid.RowDefinitions>
@@ -33,9 +85,10 @@
                             <RowDefinition Height="5*"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto">
+                        
                             <RelativePanel>
-                                <StackPanel x:Name="NewMenu" Margin="20">
+                            <ScrollViewer x:Name="NewMenu" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel  Margin="20">
                                     <TextBox x:Name="NewMenuName" Header= "메뉴 이름" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
                                     <muxc:RadioButtons x:Name="NewMenuSize" Header="크기" Margin="0,24,0,0" SelectedIndex="0">
                                         <x:String>M</x:String>
@@ -44,14 +97,16 @@
                                     </muxc:RadioButtons>
                                     <TextBox x:Name="NewMenuPrice" Header= "메뉴 가격" Margin="0,24,0,0" MaxLength="320" Width="400" HorizontalAlignment="Left"/>
                                 </StackPanel>
-
-                                <StackPanel RelativePanel.RightOf="NewMenu" Margin="20">
+                            </ScrollViewer>
+                            <ScrollViewer RelativePanel.RightOf="NewMenu" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel  Margin="20">
                                     <GridView
                                         x:Name="NewMenuIngredients"
                                         Background="Beige"
                                         Padding="10" MaxWidth="700"
                                         SelectionMode="Single"
-                                        ItemsSource="{x:Bind ViewModel.Ingredients}">
+                                        ItemsSource="{x:Bind ViewModel.Ingredients}"
+                                        ItemTemplateSelector="{StaticResource IngredientsDataTemplateSelector}">
                                         <GridView.Header>
                                             <Grid MinWidth="{Binding ActualWidth, ElementName=NewMenu}">
                                                 <Grid.ColumnDefinitions>
@@ -71,48 +126,16 @@
                                                 <Setter Property="Background" Value="Bisque"/>
                                                 <Setter Property="MinWidth" Value="140"/>
                                                 <Setter Property="MaxWidth" Value="165"/>
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate>
-                                                            <Grid x:Name="IngredientForm" Background="Wheat" Padding="5">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition/>
-                                                                    <RowDefinition/>
-                                                                    <RowDefinition/>
-                                                                </Grid.RowDefinitions>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition/>
-                                                                    <ColumnDefinition/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBox Grid.ColumnSpan="2" x:Name="TBName"></TextBox>
-                                                                <TextBlock Grid.ColumnSpan="2" x:Name="IngredientName" Visibility="Collapsed"></TextBlock>
-                                                                <TextBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="TBQuantity" ></TextBox>
-                                                                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Name="IngredientQuantity" Visibility="Collapsed"></TextBlock>
-                                                                <Button Grid.Row="2" x:Name="BtnIngredientAccept" Click="BtnIngredientAccept_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
-                                                                    <SymbolIcon Symbol="Accept" />
-                                                                </Button>
-                                                                <Button Grid.Row="2" x:Name="BtnIngredientEdit" Visibility="Collapsed" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
-                                                                    <SymbolIcon Symbol="Edit" />
-                                                                </Button>
-                                                                <Button Grid.Row="2" Grid.Column="1" x:Name="BtnIngredientCancel" Click="BtnIngredientCancel_Click" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
-                                                                    <SymbolIcon Symbol="Cancel"/>
-                                                                </Button>
-                                                                <Button Grid.Row="2" Grid.Column="1" x:Name="BtnIngredientRemove" Visibility="Collapsed" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent">
-                                                                    <SymbolIcon Symbol="Remove"/>
-                                                                </Button>
-                                                            </Grid>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
+                                                <Setter Property="MinHeight" Value="110"/>
                                             </Style>
                                         </GridView.ItemContainerStyle>
                                     </GridView>
                                 </StackPanel>
+                            </ScrollViewer>
+                        </RelativePanel>
 
-                            </RelativePanel>
-
-                        </ScrollViewer>
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource MediumLeftTopRightBottomMargin}">
+                        
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 50 0">
                             <Button x:Name="BtnNewRecipeAdd" Content="확인" Margin="0 5 5 0"/>
                             <Button x:Name="BtnNewRecipeCancel" Content="취소" Margin="5 5 0 0"/>
                         </StackPanel>
