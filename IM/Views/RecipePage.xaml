@@ -21,8 +21,8 @@
             <CommandBar Grid.Column="1" OverflowButtonVisibility="Collapsed" Background="Transparent" VerticalAlignment="Center">
                 <AppBarButton x:Name="BtnRecipeAdd" Icon="Add" Click="BtnRecipeAdd_Click"/>
                 <AppBarSeparator/>
-                <AppBarButton Icon="Edit" />
-                <AppBarButton Icon="Delete"/>
+                <AppBarButton x:Name="BtnRecipeEdit" Icon="Edit" Click="BtnRecipeEdit_Click"/>
+                <AppBarButton x:Name="BtnRecipeDelete" Icon="Delete" Click="BtnRecipeDelete_Click"/>
                 <AppBarSeparator/>
                 <AppBarButton Icon="Save"/>
             </CommandBar>

@@ -17,6 +17,7 @@ namespace IM.Views
     {
         public IngredientViewModel ViewModel { get; } = new IngredientViewModel(new Core.Models.Ingredients());
         public RecipeViewModel RecipeViewModel { get; set; }
+        private bool isEdit { get; set; } = false;
 
         public RecipeForm()
         {
@@ -25,8 +26,38 @@ namespace IM.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if(e.Parameter is RecipeViewModel)
+            {
+                isEdit = false;
+                RecipeViewModel = e.Parameter as RecipeViewModel;
+            }
+            else
+            {
+                isEdit = true;
+
+                var param = e.Parameter as Tuple<RecipeViewModel,int>;
+                RecipeViewModel = param.Item1;
+
+                var Selected = RecipeViewModel.Recipes[param.Item2];
+
+                TextBox NewMenuName = (TextBox)FindName("NewMenuName");
+                Microsoft.UI.Xaml.Controls.RadioButtons NewMenuSize = (Microsoft.UI.Xaml.Controls.RadioButtons)FindName("NewMenuSize");
+                TextBox NewMenuPrice = (TextBox)FindName("NewMenuPrice");
+                Dictionary<string, int> Size = new Dictionary<string, int>();
+                Size["M"] = 0;
+                Size["L"] = 1;
+                Size["XXXL"] = 2;
+                NewMenuName.Text = Selected.Name;
+                NewMenuSize.SelectedIndex = Size[Selected.Size];
+                NewMenuPrice.Text = Selected.Price.ToString();
+
+                ViewModel.SetIngredients(Selected.Ingredients);
+
+                NewMenuName.IsEnabled = false;
+                //NewMenuSize.IsEnabled = false;
+            }
+
             base.OnNavigatedTo(e);
-            RecipeViewModel = e.Parameter as RecipeViewModel;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -117,6 +148,54 @@ namespace IM.Views
             double Quantity = double.Parse(IngredientQuantity.Text);
 
             ViewModel.EditIngredient(Index, Name, Quantity);
+        }
+
+        private void BtnNewRecipeAdd_Click(object sender, RoutedEventArgs e)
+        {
+            TextBox NewMenuName = (TextBox)FindName("NewMenuName");
+            Microsoft.UI.Xaml.Controls.RadioButtons NewMenuSize = (Microsoft.UI.Xaml.Controls.RadioButtons)FindName("NewMenuSize");
+            TextBox NewMenuPrice = (TextBox)FindName("NewMenuPrice");
+
+            Dictionary<string, double> NewMenuIngredients = ViewModel.GetIngredientsValuePairs();// 여기까지
+
+            if (NewMenuName == null || NewMenuSize == null || NewMenuPrice == null)
+            {
+                Debug.WriteLine("There is NULL reference!!");
+            }
+            else
+            {
+                Debug.Write("Name: " + NewMenuName.Text + ", Size: " + NewMenuSize.SelectedItem.ToString() + ", Price: " + NewMenuPrice.Text + ", Ingredient: { ");
+                int i = 0;
+                foreach (var item in NewMenuIngredients)
+                {
+                    i++;
+                    Debug.Write(item.Key + ":" + item.Value.ToString());
+                    if(i != NewMenuIngredients.Count)
+                    {
+                        Debug.Write(", "); 
+                    }
+                }
+                Debug.WriteLine(" }");
+            }
+
+            string name = NewMenuName.Text;
+            string size = NewMenuSize.SelectedItem.ToString();
+            double price = NewMenuPrice.Text != "" ? double.Parse(NewMenuPrice.Text) : 0.0;
+            if(!isEdit)
+            {
+                RecipeViewModel.AddRecipe(name, size, price, NewMenuIngredients);
+            }
+            else
+            {
+                RecipeViewModel.ModifyRecipe(name, size, price, NewMenuIngredients);
+            }
+
+            Frame.Navigate(typeof(RecipePage),RecipeViewModel);
+        }
+
+        private void BtnNewRecipeCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(RecipePage));
         }
     }
 }

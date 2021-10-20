@@ -136,8 +136,8 @@
 
                         
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 50 0">
-                            <Button x:Name="BtnNewRecipeAdd" Content="확인" Margin="0 5 5 0"/>
-                            <Button x:Name="BtnNewRecipeCancel" Content="취소" Margin="5 5 0 0"/>
+                            <Button x:Name="BtnNewRecipeAdd" Content="확인" Click="BtnNewRecipeAdd_Click" Margin="0 5 5 0"/>
+                            <Button x:Name="BtnNewRecipeCancel" Content="취소" Click="BtnNewRecipeCancel_Click" Margin="5 5 0 0"/>
                         </StackPanel>
                     </Grid>
 

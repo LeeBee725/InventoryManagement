@@ -49,11 +49,9 @@ namespace IM.ViewModels
             MessageDialog msg = new MessageDialog("항목을 삭제하시겠습니까?", "확인");
 
             UICommand BtnOK = new UICommand("확인");
-            //BtnOK.Invoked = BtnOK_Click;
             msg.Commands.Add(BtnOK);
 
             UICommand BtnCancel = new UICommand("취소");
-            //BtnCancel.Invoked = BtnCancel_Click;
             msg.Commands.Add(BtnCancel);
 
             var command = await msg.ShowAsync();
@@ -63,14 +61,28 @@ namespace IM.ViewModels
             }
         }
 
-        private void BtnCancel_Click(IUICommand command)
+        public Dictionary<string, double> GetIngredientsValuePairs()
         {
-            
+            var Pairs = new Dictionary<string, double>();
+
+            foreach(var ingredient in Ingredients)
+            {
+                if(ingredient.IsAccept)
+                {
+                    Pairs.Add(ingredient.Name, ingredient.Quantity);
+                }
+            }
+
+            return Pairs;
         }
 
-        private void BtnOK_Click(IUICommand command)
+        public void SetIngredients(Dictionary<string, double> ingredients)
         {
-            
+            foreach(var NameQuantity in ingredients)
+            {
+                Ingredients.Add(new Ingredient { Name = NameQuantity.Key, Quantity = NameQuantity.Value, IsAccept = true });
+            }
         }
+
     }
 }

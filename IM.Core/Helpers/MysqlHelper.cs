@@ -195,12 +195,12 @@ namespace IM.Core.Helpers
             }
         }
 
-        public void InsertRecipe()
+        public void InsertRecipe(string name, string size, double price, Dictionary<string, double> ingredients)
         {
             try
             {
                 SelectTable(MysqlConnectionInfo.TABLE_MENU);
-                //curTable.Insert().Values().Execute();
+                curTable.Insert("name", "size", "price", "ingredients").Values(name, size, price, JsonConvert.SerializeObject(ingredients) ).Execute();
             }
             catch (NullReferenceException e)
             {
@@ -210,15 +210,14 @@ namespace IM.Core.Helpers
             {
                 Debug.WriteLine("ArgumentNullException in InsertRecipe():: " + e.Message);
             }
-
         }
 
-        public void DeleteRecipe()
+        public void DeleteRecipe(in string name, in string size)
         {
             try
             {
                 SelectTable(MysqlConnectionInfo.TABLE_MENU);
-                //curTable.Delete().Where("name like :name").Bind("name", name).Execute();
+                curTable.Delete().Where("name like :name and size like :size").Bind("name", name).Bind("size", size).Execute();
             }
             catch (NullReferenceException e)
             {
@@ -230,12 +229,12 @@ namespace IM.Core.Helpers
             }
         }
 
-        public void ModifyRecipe()
+        public void ModifyRecipe(in string name, in string size, in double price, in Dictionary<string, double> ingredients)
         {
             try
             {
                 SelectTable(MysqlConnectionInfo.TABLE_MENU);
-                //curTable.Update().Set("name", name).Set("quantity", quantity).Set("quantity_of_needs", quantity_of_needs).Set("price_per_piece", price_per_piece).Set("quantity_per_piece", quantity_per_piece).Where("name like :name").Bind("name", name).Execute();
+                curTable.Update().Set("name", name).Set("size", size).Set("price", price).Set("ingredients", JsonConvert.SerializeObject(ingredients)).Where("name like :name and size like :size").Bind("name", name).Bind("size", size).Execute();
             }
             catch (NullReferenceException e)
             {
@@ -247,26 +246,25 @@ namespace IM.Core.Helpers
             }
         }
 
-        public Recipe FindRecipe(in string name)
+        public Recipe FindRecipe(in string name, in string size)
         {
             Recipe recipe = null;
             try
             {
                 SelectTable(MysqlConnectionInfo.TABLE_MENU);
-                //RowResult result = curTable.Select("*").Where("name like :name").Bind("name", name).Execute();
-                //Row row = result.FetchOne();
+                RowResult result = curTable.Select("*").Where("name like :name and size like :size").Bind("name", name).Bind("size", size).Execute();
+                Row row = result.FetchOne();
 
-                //if (row != null)
-                //{
-                //    Recipe = new Recipe
-                //    {
-                //        Name = result.Current.GetString("name"),
-                //        Quantity = double.Parse(result.Current.GetString("quantity")),
-                //        QuantityOfNeeds = double.Parse(result.Current.GetString("quantity_of_needs")),
-                //        PricePerPiece = double.Parse(result.Current.GetString("price_per_piece")),
-                //        QuantityPerPiece = double.Parse(result.Current.GetString("quantity_per_piece"))
-                //    };
-                //}
+                if (row != null)
+                {
+                    recipe = new Recipe
+                    {
+                        Name = result.Current.GetString("name"),
+                        Size = result.Current.GetString("size"),
+                        Price = double.Parse(result.Current.GetString("price")),
+                        Ingredients = JsonConvert.DeserializeObject<Dictionary<string, double>>(result.Current.GetString("ingredients"))
+                    };
+                }
 
             }
             catch (NullReferenceException e)
@@ -299,7 +297,7 @@ namespace IM.Core.Helpers
                     {
                         Name = result.Current.GetString("name"),
                         Size = result.Current.GetString("size"),
-                        Price = Int32.Parse(result.Current.GetString("price")),
+                        Price = double.Parse(result.Current.GetString("price")),
                         Ingredients = JsonConvert.DeserializeObject<Dictionary<string, double>>(result.Current.GetString("ingredients"))
                     });
                 }
@@ -318,17 +316,16 @@ namespace IM.Core.Helpers
             {
                 SelectTable(MysqlConnectionInfo.TABLE_MENU);
                 //RowResult result = curTable.Select("*").Execute();
+                SqlResult result = sess.SQL("SELECT name, size, price, CONVERT(ingredients USING utf8mb4) as ingredients FROM inventory.menu;").Execute();
 
-                //while (result.Next())
-                //{
-                //    Debug.WriteLine(
-                //        result.Current.GetString("id") + " " +
-                //        result.Current.GetString("name") + " " +
-                //        result.Current.GetString("quantity") + " " +
-                //        result.Current.GetString("quantity_of_needs") + " " +
-                //        result.Current.GetString("price_per_piece") + " " +
-                //        result.Current.GetString("quantity_per_piece"));
-                //}
+                while (result.Next())
+                {
+                    Debug.WriteLine(
+                        result.Current.GetString("name") + " " +
+                        result.Current.GetString("size") + " " +
+                        result.Current.GetString("price") + " " +
+                        result.Current.GetString("ingredients"));
+                }
             }
             catch (Exception e)
             {
